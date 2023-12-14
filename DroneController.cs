@@ -132,6 +132,28 @@ public class DroneController : MonoBehaviour
         }
     }
 
+    void FormationCube()
+{
+    int sideLength = Mathf.CeilToInt(Mathf.Pow(drones.Length, 1f / 3f)); // Küp kenar uzunluğu
+    float halfSide = sideLength * 0.5f; // Küp kenar uzunluğunun yarısı
+
+    for (int i = 0; i < drones.Length; i++)
+    {
+        int layer = i / (sideLength * sideLength); // Küp katmanı
+        int row = (i % (sideLength * sideLength)) / sideLength; // Küp satırı
+        int col = i % sideLength; // Küp sütunu
+
+        Vector3 newPosition = new Vector3(
+            transform.position.x + col * gridSpacing,
+            transform.position.y + row * gridSpacing,
+            transform.position.z + layer * gridSpacing
+        );
+
+        StartCoroutine(MoveDroneSmoothly(drones[i], newPosition));
+    }
+}
+
+
     void FormationLine()
     {
         for (int i = 0; i < drones.Length; i++)
